@@ -1,0 +1,32 @@
+[project]
+name = "churn-prediction"
+version = "0.1.0"
+description = "Churn Prediction using PyTorch MLP and MLflow"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{name = "Humberto Sena Santos"}]
+dependencies = [
+    "torch>=2.0.0",
+    "scikit-learn",
+    "mlflow",
+    "fastapi",
+    "uvicorn",
+    "pandas",
+    "pydantic",
+    "pandera",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "pytest",
+    "ipykernel",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+select = ["E", "F", "I", "N", "W"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
