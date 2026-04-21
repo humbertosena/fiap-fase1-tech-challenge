@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+.env
+
+# Data & Models
+data/raw/*
+data/processed/*
+!data/**/*.gitkeep
+models/*
+!models/*.gitkeep
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# IDEs & OS
+.vscode/
+.idea/
+.DS_Store
