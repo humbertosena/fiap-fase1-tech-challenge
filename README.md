@@ -16,6 +16,17 @@ O objetivo é desenvolver uma solução robusta de Deep Learning para prever a e
 
 ---
 
+## 📋 Entregáveis por Etapa
+
+| Etapa | Descrição                    | Entregáveis                                              | Data       |
+| :---: | :--------------------------- | :------------------------------------------------------- | :--------- |
+| **1** | Entendimento e Preparação    | Notebook de EDA + baselines registrados no MLflow        | 22/04/2026 |
+| **2** | Modelagem com Redes Neurais  | MLP (PyTorch) com early stopping + comparação de métricas | —          |
+| **3** | Engenharia e API             | `src/` modularizado + endpoints FastAPI + testes Pytest  | —          |
+| **4** | Documentação e Finalização   | Model Card + README final + vídeo STAR (5 min)           | —          |
+
+---
+
 ## 💼 Contexto de Negócio
 
 No setor de Telecomunicações, o **Churn Rate** (taxa de rotatividade) é uma das métricas mais críticas de performance. Reter um cliente atual é estrategicamente mais barato do que adquirir um novo (CAC - Customer Acquisition Cost).
