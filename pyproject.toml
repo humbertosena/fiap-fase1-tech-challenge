@@ -21,6 +21,7 @@ dev = [
     "ruff",
     "pytest",
     "ipykernel",
+    "kagglehub",  # Download automático do IBM Telco dataset (reprodutibilidade)
 ]
 
 [tool.ruff]

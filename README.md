@@ -93,6 +93,43 @@ make run-api
 
 ---
 
+## 📦 Reprodutibilidade & Dataset
+
+O dataset utilizado é o **IBM Telco Customer Churn**, disponível publicamente no Kaggle:
+
+> **🔗 Dataset:** [https://www.kaggle.com/datasets/blastchar/telco-customer-churn](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
+
+Por boas práticas de MLOps, os arquivos de dados **não são versionados no repositório** (protegidos pelo `.gitignore`). Para reproduzir o pipeline do zero:
+
+### Opção A — Download automático (recomendado)
+
+Configure suas credenciais do Kaggle e execute:
+
+```bash
+# 1. Configure suas credenciais (somente na primeira vez)
+#    Obtenha a API Key em: https://www.kaggle.com/settings/account
+export KAGGLE_USERNAME=seu_usuario
+export KAGGLE_KEY=sua_chave_api
+
+# 2. Execute o script — ele baixa e processa tudo automaticamente
+uv run python -m src.data.make_dataset
+```
+
+### Opção B — Download manual
+
+1. Acesse o [link do dataset](https://www.kaggle.com/datasets/blastchar/telco-customer-churn) (conta gratuita no Kaggle)
+2. Baixe e extraia o arquivo ZIP
+3. Coloque o CSV em `data/raw/WA_Fn-UseC_-Telco-Customer-Churn.csv`
+4. Execute o pipeline de pré-processamento:
+
+```bash
+uv run python -m src.data.make_dataset
+```
+
+> O script gera automaticamente `data/processed/train_processed.csv` e `data/processed/test_processed.csv` com o preprocessor salvo em `models/preprocessor.pkl`.
+
+---
+
 ## 📊 Model Tracking (MLflow)
 
 Para visualizar o histórico de experimentos, performance das épocas da rede neural e comparar diferentes arquiteturas de MLP:

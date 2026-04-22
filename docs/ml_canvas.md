@@ -5,6 +5,11 @@
 **Data**: 21/04/2026<br/>
 **Iteração**: v0.3 - Baseline & Pipeline Modular de Dados<br/>
 
+> 📄 **Versão visual (PNG):** [ml_canvas.png](ml_canvas.png) — Formato padrão de mercado para apresentação.
+
+---
+
+
 ## 1. Propostas de Valor (Value Propositions)
 
 Identificar proativamente clientes com alto risco de cancelamento (Churn), com o objetivo de permitir que a equipe de retenção atue antes do cancelamento efetivo, preservando a receita recorrente (MRR) e aumentando o Life Time Value (LTV) do cliente.
