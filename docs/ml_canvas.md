@@ -3,7 +3,7 @@
 **Projeto**: Previsão de Churn - Operadora de Telecom (FIAP Tech Challenge)<br/>
 **Responsável**: Humberto Sena Santos<br/>
 **Data**: 21/04/2026<br/>
-**Iteração**: v0.2 - Design Baseado em Experimentação<br/>
+**Iteração**: v0.3 - Baseline & Pipeline Modular de Dados<br/>
 
 ## 1. Propostas de Valor (Value Propositions)
 
@@ -33,13 +33,13 @@ Os dados são extraídos de sistemas de CRM e Billing da operadora uma única ve
 - **Demográficos**: Gênero, Senior Citizen, Parceiros.
 - **Serviços**: Tipo de Internet, Segurança Online, Streaming.
 - **Contratuais**: Tipo de contrato (mensal/anual), Paperless billing, Método de pagamento.
+- **Sintéticos (Criados na EDA)**: `Charges_per_Tenure` (gasto médio mensal real para captar a sensibilidade financeira do cliente).
 
-**Experimentação Necessária:**
+**Estratégia de Pré-processamento (Decisão baseada na EDA):**
 
-- **Abordagem A**: Manter features categóricas originais com One-Hot Encoding (indicado para Baselines).
-- **Abordagem B**: Aplicar Normalização/Escalonamento (Standard vs MinMax) e tratamento de outliers (mandatório para a MLP em PyTorch).
-
-**Decisão**: A escolha final dependerá da performance da Rede Neural nos experimentos de convergência de gradiente.
+- **Categóricas**: Utilização de `OneHotEncoder(drop='first')` para evitar multicolinearidade.
+- **Numéricas**: Imputação de nulos (ex: novos clientes) via mediana, seguida de `StandardScaler` (mandatório para estabilidade do gradiente na MLP em PyTorch).
+- **Abordagem Unificada**: A engenharia foi encapsulada em um `ColumnTransformer` no `build_features.py`, gerando um artefato `.pkl` único que serve perfeitamente tanto para o modelo Baseline quanto para a futura Rede Neural.
 
 ## 6. Construção de Modelos (Building Models)
 
@@ -73,12 +73,10 @@ Predição em lote (Batch) executada mensalmente para toda a base ativa. Baixa r
 - ROI da Campanha: (Receita Salva - Custo da Retenção) / Custo da Retenção.
 - **Análise de Custo Financeiro**: Matriz de custo ponderando o impacto financeiro de Falsos Negativos (perda do LTV) vs. Falsos Positivos (custo de marketing/desconto desnecessário).
 
-### Experimentação Necessária:
-
-- **Métrica Técnica**: AUC-ROC e Log-Loss (para avaliar a qualidade das probabilidades da MLP).
-- **Métrica de Negócio (Custo)**: Comparar Custo(Estratégia A) vs Custo(Estratégia B).
-
-**Simulação**: Calcular (FN _ LTV_Perdido) + (FP _ Custo_Campanha). O experimento que resultar no menor custo total será o design final.
+### Experimentação Necessária (Validada na EDA):
+- **Métrica Técnica**: F1-Score (devido ao desbalanceamento) e curva AUC-ROC para avaliar o quão bem a MLP separa as classes em comparação ao Baseline (LogReg).
+- **Métrica de Negócio (Custo)**: Iterar sob o `Probability Threshold` mapeando a curva de custo total.
+- **Simulação validada**: A matriz matemática `(FN * R$ 500) + (FP * R$ 50)` foi construída e consolidada com sucesso no script de Baseline. Esta mesma função será utilizada para julgar se a Rede Neural realmente traz mais valor financeiro que o modelo estatístico simples.
 
 ## 10. Avaliação em Tempo Real e Monitoramento (Live Evaluation and Monitoring)
 
