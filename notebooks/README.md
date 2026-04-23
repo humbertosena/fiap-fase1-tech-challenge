@@ -91,3 +91,24 @@ Se você prefere a interface clássica do Jupyter diretamente no navegador:
    ```
 2. O navegador abrirá automaticamente. Navegue até a pasta `notebooks/` e abra o arquivo `01_EDA_Telco_Churn.ipynb`.
 3. Certifique-se de selecionar o kernel **"Python (fiap-churn-env)"** no canto superior direito (ou através do menu _Kernel > Change kernel_).
+
+---
+
+## 📊 Model Tracking & Git LFS
+
+Este projeto utiliza o **MLflow** para rastreamento de experimentos. O banco de dados de metadados (`mlflow.db`) e os artefatos locais são armazenados neste diretório.
+
+Para visualizar os experimentos através da interface web do MLflow, execute o seguinte comando **a partir da raiz do projeto**:
+
+```bash
+uv run mlflow ui --backend-store-uri sqlite:///notebooks/mlflow.db
+```
+
+### 💾 Armazenamento do Banco de Dados (Git LFS)
+
+O arquivo `mlflow.db` está configurado para ser rastreado via **Git LFS (Large File Storage)**. 
+
+*   **Objetivo:** Preservar a integridade e o tamanho do histórico do Git, evitando que binários de bancos de dados SQLite sobrecarreguem o repositório principal.
+*   **Limites do GitHub:** A conta gratuita oferece **1 GB** de armazenamento LFS, suficiente para os experimentos desta fase.
+
+> **⚠️ Nota de Escalabilidade:** Para cenários reais de produção ou volumes de dados superiores a 1 GB, recomenda-se a migração para instâncias gerenciadas do MLflow (como no Databricks) ou a configuração de um banco de dados externo (Postgres/MySQL) e storage remoto (S3/GCS/Azure Blob).

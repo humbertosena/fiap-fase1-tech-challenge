@@ -22,3 +22,7 @@ mlartifacts/
 .vscode/
 .idea/
 .DS_Store
+
+
+# Custon
+.plan/

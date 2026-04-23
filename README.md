@@ -147,9 +147,18 @@ Para visualizar o histórico de experimentos, performance das épocas da rede ne
 
 1. Execute o servidor de tracking local:
    ```bash
-   uv run mlflow ui
+   uv run mlflow ui --backend-store-uri sqlite:///notebooks/mlflow.db
    ```
 2. Acesse no seu navegador: `http://localhost:5000`
+
+### 💾 Armazenamento do Banco de Dados (Git LFS)
+
+Neste projeto acadêmico, o arquivo `notebooks/mlflow.db` está sendo rastreado via **Git LFS (Large File Storage)**. 
+
+*   **Por que Git LFS?** Isso permite preservar o tamanho do histórico do Git, evitando que o repositório fique excessivamente pesado com o crescimento do banco de dados SQLite. 
+*   **Limites:** A conta gratuita do GitHub disponibiliza até **1 GB** de armazenamento LFS, o que é perfeitamente adequado para o escopo dos experimentos desta fase.
+
+> **⚠️ Nota para Produção:** Para ambientes produtivos ou caso o histórico do MLflow ultrapasse 1 GB, é fortemente recomendado migrar o banco de dados e os artefatos para soluções mais robustas e escaláveis, como **Databricks**, **AWS/Azure/GCP File Storage (S3/Blob/GCS)** ou um banco de dados relacional gerenciado (PostgreSQL/MySQL) fora da estrutura do repositório Git.
 
 ---
 
@@ -162,9 +171,10 @@ Para visualizar o histórico de experimentos, performance das épocas da rede ne
 
 ## 👥 Autores
 
-| Nome                     | RM       | Função no Projeto                               |
-| :----------------------- | :------- | :---------------------------------------------- |
-| **Humberto Sena Santos** | RM370472 | ML Engineer / DevOps / Data Scientist / Analyst |
+| Nome                                | RM       | Função no Projeto                               |
+| :---------------------------------- | :------- | :---------------------------------------------- |
+| **Humberto Sena Santos**            | RM370472 | ML Engineer / DevOps / Data Scientist / Analyst |
+| **João Victor Faustino Piga Lopes** | RM374010 | ML Engineer / DevOps / Data Scientist / Analyst |
 
 ---
 
