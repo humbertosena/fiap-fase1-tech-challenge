@@ -114,3 +114,11 @@ Implementar uma rede neural MLP em PyTorch para previsão de churn, integrando o
     - Atualização do controle de versão para rastrear o banco de dados na nova localização.
     - Encerrados processos zumbis que travavam o arquivo durante a migração.
 
+- **`feat(models): implementação da classe ChurnDataset (PyTorch)`**
+  - **O que foi feito:** Criado o arquivo `src/models/dataset.py`.
+  - **Detalhes:** 
+    - Implementada a classe `ChurnDataset` herdando de `torch.utils.data.Dataset`.
+    - Garantida a conversão automática dos dados processados (31 features) para tensores de ponto flutuante.
+    - Adicionada função auxiliar `get_dataloader` para abstrair o gerenciamento de batches e embaralhamento (shuffle).
+    - Validação técnica realizada com sucesso, confirmando o carregamento de 5.625 amostras de treino.
+
