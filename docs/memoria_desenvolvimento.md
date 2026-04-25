@@ -93,3 +93,24 @@ Preparar o repositório para a fase de experimentação (Exploratory Data Analys
     - Criado `src/utils/seed_config.py` contendo a função `set_seeds()` (assegurando determinismo em `random`, `numpy`, SO e futuramente `torch`).
     - Criado `src/features/build_features.py` encapsulando toda a limpeza, a Feature Engineering (`Charges_per_Tenure`) e o Pipeline do Scikit-Learn. A função de preprocessamento exporta ativamente o `ColumnTransformer` via `joblib` para o arquivo `models/preprocessor.pkl`, garantindo a simetria de transformação para a API em FastAPI.
     - Criado `src/data/make_dataset.py` como script orquestrador. Ele consome os dados raw, executa o `train_test_split` (evitando Data Leakage), roda o Pipeline e exporta os dados finais em formato tabular para `data/processed/train_processed.csv` e `data/processed/test_processed.csv`.
+
+- **`docs(plan): criação do guia de execução para a etapa 1`**
+  - **O que foi feito:** Criado o arquivo `.plan/Guia de Execução Etapa 1 - EDA & Baseline.md`.
+  - **Detalhes:** O documento serve como roteiro técnico para a reprodução dos resultados da Etapa 1 e prepara o terreno para a Fase 2 (Deep Learning).
+
+---
+
+## [Iteração v0.3] - Modelagem MLP & MLOps - 25/04/2026
+
+**Objetivo da Fase:** 
+Implementar uma rede neural MLP em PyTorch para previsão de churn, integrando o fluxo de treinamento com o MLflow para rastreabilidade e governança.
+
+### Resumo de Atividades:
+
+- **`chore(mlops): centralização do backend store do MLflow`**
+  - **O que foi feito:** Movimentação do arquivo `mlflow.db` da pasta `notebooks/` para a raiz do projeto.
+  - **Detalhes:** 
+    - A mudança visa centralizar a governança de experimentos, permitindo que tanto notebooks quanto scripts de treino (`src/models/`) compartilhem a mesma base de dados via URI `sqlite:///mlflow.db`.
+    - Atualização do controle de versão para rastrear o banco de dados na nova localização.
+    - Encerrados processos zumbis que travavam o arquivo durante a migração.
+

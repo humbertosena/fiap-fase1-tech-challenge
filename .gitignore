@@ -26,3 +26,5 @@ mlartifacts/
 
 # Custon
 .plan/
+# Gemini CLI
+.geminiignore
