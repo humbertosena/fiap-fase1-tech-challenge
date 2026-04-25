@@ -130,3 +130,12 @@ Implementar uma rede neural MLP em PyTorch para previsão de churn, integrando o
     - Dropout de 0.2 aplicado entre camadas ocultas para mitigar overfitting, conforme boas práticas de Deep Learning.
     - Estrutura preparada para uso com a função de perda `BCEWithLogitsLoss`.
 
+- **`feat(models): pipeline de treinamento com MLflow e Early Stopping`**
+  - **O que foi feito:** Criado o arquivo `src/models/train_model.py`.
+  - **Detalhes:** 
+    - Implementado loop de treinamento completo integrando `ChurnDataset` e `ChurnMLP`.
+    - **Governança MLOps:** Configurado tracking para o backend store centralizado (`mlflow.db`) na raiz.
+    - **Rastreabilidade:** Log automático de hiperparâmetros, métricas por época (`train_loss`, `val_loss`) e registro do artefato do modelo (`.pth`).
+    - **Robustez:** Implementado mecanismo de *Early Stopping* com paciência de 5 épocas para evitar sobreajuste.
+    - **Resolução Técnica:** Corrigida inconsistência de schema no banco de dados MLflow via patch manual na tabela `alembic_version`, preservando o histórico de experimentos anteriores sem perda de dados.
+

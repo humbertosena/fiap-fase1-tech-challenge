@@ -18,6 +18,7 @@ models/*
 # MLflow
 mlruns/
 mlartifacts/
+*.db.bak
 
 # IDEs & OS
 .vscode/
