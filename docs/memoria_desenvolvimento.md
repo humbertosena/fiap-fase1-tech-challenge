@@ -139,3 +139,11 @@ Implementar uma rede neural MLP em PyTorch para previsão de churn, integrando o
     - **Robustez:** Implementado mecanismo de *Early Stopping* com paciência de 5 épocas para evitar sobreajuste.
     - **Resolução Técnica:** Corrigida inconsistência de schema no banco de dados MLflow via patch manual na tabela `alembic_version`, preservando o histórico de experimentos anteriores sem perda de dados.
 
+- **`feat(models): avaliação e comparação técnica (MLP vs Baseline)`**
+  - **O que foi feito:** Execução do script de avaliação final `src/models/evaluate_comparison.py`.
+  - **Resultados MLP:**
+    - **AUC (Área sob a curva):** 0.8279
+    - **F1-Score (Classe Churn):** 0.5703
+    - **Recall:** 0.5259
+  - **Análise Comparativa:** A MLP apresentou um desempenho sólido como modelo de Deep Learning, superando as expectativas iniciais de convergência. O modelo foi registrado como artefato oficial no MLflow, estando pronto para a próxima etapa de implantação (API).
+

@@ -18,12 +18,12 @@ O objetivo é desenvolver uma solução robusta de Deep Learning para prever a e
 
 ## 📋 Entregáveis por Etapa
 
-| Etapa | Descrição                    | Entregáveis                                              | Data       |
-| :---: | :--------------------------- | :------------------------------------------------------- | :--------- |
-| **1** | Entendimento e Preparação    | Notebook de EDA + baselines registrados no MLflow        | 22/04/2026 |
-| **2** | Modelagem com Redes Neurais  | MLP (PyTorch) com early stopping + comparação de métricas | —          |
-| **3** | Engenharia e API             | `src/` modularizado + endpoints FastAPI + testes Pytest  | —          |
-| **4** | Documentação e Finalização   | Model Card + README final + vídeo STAR (5 min)           | —          |
+| Etapa | Descrição                    | Entregáveis                                               | Data       |
+| :---: | :--------------------------- | :-------------------------------------------------------- | :--------- |
+| **1** | Entendimento e Preparação    | Notebook de EDA + baselines registrados no MLflow         | 22/04/2026 |
+| **2** | Modelagem com Redes Neurais  | MLP (PyTorch) com early stopping + comparação de métricas | 26/04/2026 |
+| **3** | Engenharia e API             | `src/` modularizado + endpoints FastAPI + testes Pytest   | —          |
+| **4** | Documentação e Finalização   | Model Card + README final + vídeo STAR (5 min)            | —          |
 
 ---
 
@@ -147,13 +147,13 @@ Para visualizar o histórico de experimentos, performance das épocas da rede ne
 
 1. Execute o servidor de tracking local:
    ```bash
-   uv run mlflow ui --backend-store-uri sqlite:///notebooks/mlflow.db
+   uv run mlflow ui --backend-store-uri sqlite:///mlflow.db
    ```
 2. Acesse no seu navegador: `http://localhost:5000`
 
 ### 💾 Armazenamento do Banco de Dados (Git LFS)
 
-Neste projeto acadêmico, o arquivo `notebooks/mlflow.db` está sendo rastreado via **Git LFS (Large File Storage)**. 
+Neste projeto acadêmico, o arquivo `mlflow.db` está sendo rastreado via **Git LFS (Large File Storage)** na raiz do projeto. 
 
 *   **Por que Git LFS?** Isso permite preservar o tamanho do histórico do Git, evitando que o repositório fique excessivamente pesado com o crescimento do banco de dados SQLite. 
 *   **Limites:** A conta gratuita do GitHub disponibiliza até **1 GB** de armazenamento LFS, o que é perfeitamente adequado para o escopo dos experimentos desta fase.

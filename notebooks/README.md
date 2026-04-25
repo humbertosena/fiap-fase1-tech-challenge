@@ -96,17 +96,17 @@ Se você prefere a interface clássica do Jupyter diretamente no navegador:
 
 ## 📊 Model Tracking & Git LFS
 
-Este projeto utiliza o **MLflow** para rastreamento de experimentos. O banco de dados de metadados (`mlflow.db`) e os artefatos locais são armazenados neste diretório.
+Este projeto utiliza o **MLflow** para rastreamento de experimentos. O banco de dados de metadados (`mlflow.db`) está localizado na raiz do projeto para centralização.
 
 Para visualizar os experimentos através da interface web do MLflow, execute o seguinte comando **a partir da raiz do projeto**:
 
 ```bash
-uv run mlflow ui --backend-store-uri sqlite:///notebooks/mlflow.db
+uv run mlflow ui --backend-store-uri sqlite:///mlflow.db
 ```
 
 ### 💾 Armazenamento do Banco de Dados (Git LFS)
 
-O arquivo `mlflow.db` está configurado para ser rastreado via **Git LFS (Large File Storage)**. 
+O arquivo `mlflow.db` (na raiz) está configurado para ser rastreado via **Git LFS (Large File Storage)**. 
 
 *   **Objetivo:** Preservar a integridade e o tamanho do histórico do Git, evitando que binários de bancos de dados SQLite sobrecarreguem o repositório principal.
 *   **Limites do GitHub:** A conta gratuita oferece **1 GB** de armazenamento LFS, suficiente para os experimentos desta fase.
