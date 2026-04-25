@@ -6,6 +6,7 @@ __pycache__/
 .venv/
 venv/
 .env
+uv.lock
 
 # Data & Models
 data/raw/*

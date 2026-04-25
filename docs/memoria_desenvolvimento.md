@@ -122,3 +122,11 @@ Implementar uma rede neural MLP em PyTorch para previsão de churn, integrando o
     - Adicionada função auxiliar `get_dataloader` para abstrair o gerenciamento de batches e embaralhamento (shuffle).
     - Validação técnica realizada com sucesso, confirmando o carregamento de 5.625 amostras de treino.
 
+- **`feat(models): definição da arquitetura ChurnMLP (PyTorch)`**
+  - **O que foi feito:** Criado o arquivo `src/models/network.py`.
+  - **Detalhes:** 
+    - Implementada rede neural MLP com 3 camadas lineares.
+    - Configuração: 31 neurônios de entrada, camadas ocultas de 16 e 8 (ReLU) e camada de saída única.
+    - Dropout de 0.2 aplicado entre camadas ocultas para mitigar overfitting, conforme boas práticas de Deep Learning.
+    - Estrutura preparada para uso com a função de perda `BCEWithLogitsLoss`.
+
