@@ -1,6 +1,8 @@
 import os
 import random
+
 import numpy as np
+
 
 def set_seeds(seed: int = 42):
     """
@@ -9,13 +11,13 @@ def set_seeds(seed: int = 42):
     """
     # Python built-in random
     random.seed(seed)
-    
+
     # Numpy
     np.random.seed(seed)
-    
+
     # Variável de ambiente OS
     os.environ['PYTHONHASHSEED'] = str(seed)
-    
+
     # PyTorch (tratamento de exceção caso o Torch não esteja instalado na máquina local ainda)
     try:
         import torch

@@ -78,29 +78,50 @@ Instala as dependências e cria o ambiente virtual:
 make install
 ```
 
-### 2. Qualidade de Código (Linting)
+### 2. Pipeline de Dados (Pandera & Reprodutibilidade)
 
-Executa o Ruff para garantir a aderência às normas da PEP 8:
+Antes de rodar a API ou treinar o modelo, é necessário baixar e processar o dataset. O projeto utiliza **Pandera** para garantir que os dados de entrada estejam em conformidade com as expectativas de negócio.
+
+```bash
+# Configura credenciais e roda o pipeline completo
+export KAGGLE_USERNAME=seu_usuario
+export KAGGLE_KEY=sua_chave_api
+uv run python -m src.data.make_dataset
+```
+
+### 3. Qualidade de Código (Ruff)
+
+Executa o linter e o formatador para garantir a aderência às normas da PEP 8 e critérios de avaliação da FIAP:
 
 ```bash
 make lint
 ```
 
-### 3. Execução de Testes
+### 4. Execução de Testes (Pytest)
 
-Roda a suíte de testes automatizados com Pytest:
+Roda a suíte de testes automatizados, cobrindo endpoints da API, schemas de dados e lógica de processamento:
 
 ```bash
 make test
 ```
 
-### 4. Iniciar a API de Predição
+### 5. Treinamento da Rede Neural (PyTorch & MLflow)
 
-Sobe o servidor FastAPI localmente:
+Executa o treinamento modularizado da MLP. Este processo inclui batching, **Early Stopping** e registro automático de métricas no MLflow.
+
+```bash
+make train
+```
+
+### 6. Iniciar a API de Predição (FastAPI)
+
+Sobe o servidor FastAPI localmente para realizar inferências. A API conta com validação **Pydantic**, documentação automática via Swagger e logging estruturado.
 
 ```bash
 make run-api
 ```
+*   **Acesse o Swagger:** [http://localhost:8000/docs](http://localhost:8000/docs)
+*   **Endpoints principais:** `/predict` (POST), `/health` (GET), `/version` (GET).
 
 ---
 

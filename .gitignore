@@ -26,3 +26,7 @@ mlartifacts/
 
 # Custon
 .plan/
+.gemini/
+gha-creds-*.json
+.github/
+uv.lock

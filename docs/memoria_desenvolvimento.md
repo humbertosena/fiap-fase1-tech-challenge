@@ -93,3 +93,90 @@ Preparar o repositório para a fase de experimentação (Exploratory Data Analys
     - Criado `src/utils/seed_config.py` contendo a função `set_seeds()` (assegurando determinismo em `random`, `numpy`, SO e futuramente `torch`).
     - Criado `src/features/build_features.py` encapsulando toda a limpeza, a Feature Engineering (`Charges_per_Tenure`) e o Pipeline do Scikit-Learn. A função de preprocessamento exporta ativamente o `ColumnTransformer` via `joblib` para o arquivo `models/preprocessor.pkl`, garantindo a simetria de transformação para a API em FastAPI.
     - Criado `src/data/make_dataset.py` como script orquestrador. Ele consome os dados raw, executa o `train_test_split` (evitando Data Leakage), roda o Pipeline e exporta os dados finais em formato tabular para `data/processed/train_processed.csv` e `data/processed/test_processed.csv`.
+
+---
+
+## [Iteração v0.3] - Etapa 3: Engenharia, API e Qualidade - 02/05/2026
+
+**Objetivo da Fase:** 
+Transformar o projeto em um serviço produtivo e robusto, implementando contratos de dados, uma API de inferência e uma suíte de testes automatizados, conforme as exigências de "Engenharia de Machine Learning".
+
+### Resumo de Atividades:
+
+- **`feat(schemas): implementação de contratos de dados com Pandera e Pydantic`**
+  - **O que foi feito:** Criado o arquivo `src/schemas/churn_schema.py`.
+  - **Detalhes:** 
+    - Definido `raw_churn_schema` (Pandera) para validar o dataset IBM Telco na entrada do pipeline.
+    - Definido `processed_churn_schema` (Pandera) para garantir a integridade das features após o processamento.
+    - Definido `ChurnRequest` (Pydantic) para validação de tipos e documentação automática (Swagger) na API.
+
+- **`refactor(features): integração de validação no pipeline de features`**
+  - **O que foi feito:** Atualizado o módulo `src/features/build_features.py`.
+  - **Detalhes:** A função `engineer_features` agora valida os dados via Pandera tanto na entrada quanto na saída, prevenindo falhas silenciosas e garantindo que o modelo nunca processe dados fora da especificação.
+
+- **`feat(models): criação do núcleo de inferência para PyTorch`**
+  - **O que foi feito:** Criado o arquivo `src/models/predict_model.py`.
+  - **Detalhes:** 
+    - Implementada a classe `ChurnMLP` com arquitetura baseada nos requisitos da Etapa 2.
+    - Criado o wrapper `ChurnModelWrapper` que carrega o `preprocessor.pkl` e os pesos do modelo (`.pth`).
+    - Implementada a lógica de inferência end-to-end (JSON -> Features -> Tensores -> Predição).
+
+- **`feat(api): desenvolvimento da API de Inferência com FastAPI`**
+  - **O que foi feito:** Refatoração completa de `src/api/main.py`.
+  - **Detalhes:** 
+    - Implementados endpoints: `/predict` (POST), `/health` (GET) e `/version` (GET).
+    - Configurado o evento `startup` para carregar os modelos na memória apenas uma vez.
+    - Integrado o sistema de logging para rastrear latência e resultados das predições.
+
+- **`test(quality): criação da suíte de testes automatizados com Pytest`**
+  - **O que foi feito:** Criação da pasta `tests/` e arquivos de teste.
+  - **Detalhes:** 
+    - `tests/conftest.py`: Definição de fixtures para o `TestClient` e payloads.
+    - `tests/test_api.py`: Testes de integração para validar o comportamento dos endpoints e a rejeição de payloads inválidos.
+    - `tests/test_schemas.py`: Testes unitários para garantir que as regras de validação do Pandera estão funcionando.
+
+- **`chore(quality): conformidade e linting`**
+  - **O que foi feito:** Ajustes de estilo e formatação em todo o código `src/` e `tests/`.
+  - **Detalhes:** Uso rigoroso do `ruff check --fix` e `ruff format` para garantir conformidade com os critérios de avaliação de "Qualidade de Código" (20% da nota).
+
+---
+
+## [Ajuste Emergencial] - Finalização das Pendências da Etapa 2 - 02/05/2026
+
+**Objetivo:** Garantir a nota máxima sanando as lacunas de modelagem identificadas.
+
+### Atividades Realizadas:
+
+- **`feat(models): implementação do script de treinamento train_model.py`**
+  - **O que foi feito:** Desenvolvido o motor de treinamento completo em PyTorch.
+  - **Detalhes:** 
+    - Implementado loop de treinamento com mini-batch SGD via `DataLoader`.
+    - Adicionada classe `EarlyStopping` para monitorar a perda de validação.
+    - Integrado ao **MLflow** para rastreamento de métricas por época e registro final do modelo.
+- **`feat(automation): automação do fluxo de treinamento`**
+  - **O que foi feito:** Atualizado o `Makefile` com o comando `make train`.
+  - **Detalhes:** Agora o pipeline completo pode ser executado via comandos de terminal, garantindo a pontuação no critério de "Reprodutibilidade".
+- **`docs(readme): documentação do ciclo de vida do modelo`**
+  - **O que foi feito:** Atualizado o `README.md` principal com as seções de treinamento e visualização no MLflow.
+
+---
+
+## [Auditoria de Conformidade] - Alinhamento com Textbook de ML - 02/05/2026
+
+**Objetivo:** Avaliar se o projeto atende aos padrões de excelência em documentação e governança de Machine Learning definidos em `@.plan/textbook.md`.
+
+### Resultado da Auditoria:
+
+- **Infraestrutura Cognitiva (Cap. 01):** ✅ **Aprovado.**
+  - O projeto evita o conhecimento tácito ao centralizar planos, mudanças e auditorias na pasta `.plan/` e nesta memória. O sistema é legível e auditável por terceiros.
+- **Prevenção do "Funciona na minha máquina" (Cap. 01 & 03):** ✅ **Aprovado.**
+  - Implementação rigorosa de `uv` e `Makefile`. A reprodutibilidade é garantida por comandos de terminal únicos, eliminando fricção na configuração do ambiente.
+- **MLflow como Diário Científico (Cap. 05):** ✅ **Aprovado.**
+  - O treinamento modularizado em `src/models/train_model.py` registra hiperparâmetros e métricas por época, transformando dados brutos de execução em registro científico vivo.
+- **Gatekeeping contra Falhas Silenciosas (Cap. 01):** ✅ **Aprovado.**
+  - O uso de **Pandera** e **Pydantic** cria uma barreira de segurança que impede que o modelo tome decisões sobre dados corrompidos ou fora da distribuição esperada.
+
+### Oportunidades Identificadas para a Etapa 4:
+1.  **Transposição da Análise Financeira:** Integrar a análise de custo (R$ 500 FN / R$ 50 FP) no Model Card para justificar thresholds de decisão.
+2.  **Identidade Visual Técnica:** Utilizar diagramas **Mermaid** para documentar o fluxo de sequência da API e o pipeline de dados no README final.
+3.  **Honestidade de Modelo:** Detalhar limitações (out-of-scope) baseadas nas características do dataset Telco.
