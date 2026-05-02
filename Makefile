@@ -12,6 +12,9 @@ test:
 train:
 	uv run python -m src.models.train_model
 
+benchmark:
+	uv run python -m src.models.benchmark_tree
+
 run-api:
 	uv run uvicorn src.api.main:app --reload --host 0.0.0.0 --port 8000
 

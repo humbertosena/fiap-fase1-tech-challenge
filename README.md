@@ -113,7 +113,15 @@ Executa o treinamento modularizado da MLP. Este processo inclui batching, **Earl
 make train
 ```
 
-### 6. Iniciar a API de Predição (FastAPI)
+### 6. Benchmark de Árvore (Random Forest)
+
+Para cumprir os requisitos de comparação tríade (Linear vs Árvore vs Neural), execute o benchmark de Random Forest:
+
+```bash
+make benchmark
+```
+
+### 7. Iniciar a API de Predição (FastAPI)
 
 Sobe o servidor FastAPI localmente para realizar inferências. A API conta com validação **Pydantic**, documentação automática via Swagger e logging estruturado.
 

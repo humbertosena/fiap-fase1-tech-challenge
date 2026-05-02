@@ -180,3 +180,23 @@ Transformar o projeto em um serviço produtivo e robusto, implementando contrato
 1.  **Transposição da Análise Financeira:** Integrar a análise de custo (R$ 500 FN / R$ 50 FP) no Model Card para justificar thresholds de decisão.
 2.  **Identidade Visual Técnica:** Utilizar diagramas **Mermaid** para documentar o fluxo de sequência da API e o pipeline de dados no README final.
 3.  **Honestidade de Modelo:** Detalhar limitações (out-of-scope) baseadas nas características do dataset Telco.
+
+---
+
+## [Fase de Polimento] - Elevação para Nível de Excelência - 02/05/2026
+
+**Objetivo:** Eliminar lacunas de comparação técnica e formalizar decisões de arquitetura conforme orientações da coordenação.
+
+### Atividades Realizadas:
+
+- **`feat(models): implementação de benchmark de árvore (Random Forest)`**
+  - **O que foi feito:** Criado o script `src/models/benchmark_tree.py`.
+  - **Detalhes:** Treinada uma Random Forest com pesos balanceados, completando a tríade exigida: Linear (LogReg) vs Árvore (RF) vs Neural (MLP).
+- **`feat(docs): formalização de Architecture Decision Records (ADRs)`**
+  - **O que foi feito:** Criado o diretório `docs/adr/` com os registros ADR-001 e ADR-002.
+  - **Detalhes:** Documentadas as decisões sobre a escolha do FastAPI e a estratégia de gatekeeping com Pandera/Pydantic.
+- **`feat(docs): criação do Plano de Monitoramento`**
+  - **O que foi feito:** Criado `docs/plano_monitoramento.md`.
+  - **Detalhes:** Definida a estratégia de detecção de Drift (PSI) e o playbook de resposta a falhas.
+- **`feat(automation): automação completa do pipeline de benchmark`**
+  - **O que foi feito:** Atualizado o `Makefile` com `make benchmark`.
