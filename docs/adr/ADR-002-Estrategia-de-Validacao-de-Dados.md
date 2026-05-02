@@ -1,4 +1,4 @@
-# ADR-002: Estratégia de Validação de Dados e Gatekeeping
+# ADR-002: Estratégia de Validação de Dados e Qualidade de Entrada
 
 ## Status
 Aceito
@@ -7,7 +7,7 @@ Aceito
 02/05/2026
 
 ## Contexto
-Em sistemas de ML, falhas silenciosas de dados ("Silent Data Corruption") podem levar a predições erradas sem que o sistema dispare erros de código. Precisamos de uma barreira técnica na entrada do pipeline e da API.
+Em sistemas de ML, falhas silenciosas de dados ("Silent Data Corruption") podem levar a predições erradas sem que o sistema dispare erros de código. Precisamos de uma camada técnica de proteção na entrada do pipeline e da API para garantir que apenas dados corretos sejam processados.
 
 ## Decisão
 Implementar a biblioteca **Pandera** para validação de DataFrames e **Pydantic** para validação de payloads JSON.

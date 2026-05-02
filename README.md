@@ -21,8 +21,8 @@ O objetivo é desenvolver uma solução robusta de Deep Learning para prever a e
 | Etapa | Descrição                    | Entregáveis                                              | Data       |
 | :---: | :--------------------------- | :------------------------------------------------------- | :--------- |
 | **1** | Entendimento e Preparação    | Notebook de EDA + baselines registrados no MLflow        | 22/04/2026 |
-| **2** | Modelagem com Redes Neurais  | MLP (PyTorch) com early stopping + comparação de métricas | —          |
-| **3** | Engenharia e API             | `src/` modularizado + endpoints FastAPI + testes Pytest  | —          |
+| **2** | Modelagem com Redes Neurais  | MLP (PyTorch) com early stopping + comparação de métricas | 28/04/2026 |
+| **3** | Engenharia e API             | `src/` modularizado + endpoints FastAPI + testes Pytest  | 02/05/2026 |
 | **4** | Documentação e Finalização   | Model Card + README final + vídeo STAR (5 min)           | —          |
 
 ---
