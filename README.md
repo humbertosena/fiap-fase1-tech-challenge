@@ -48,17 +48,17 @@ O repositório segue os padrões de mercado para projetos MLOps, separando o lab
 
 ```mermaid
 graph TD
-    A[Raw Data] --> B[Pipeline src.data]
-    B --> C{Validação Pandera}
-    C -->|Sucesso| D[Feature Engineering]
-    D --> E[Treino PyTorch MLP]
-    E --> F[MLflow Tracking]
-    F --> G[Model Registry .pth]
-    G --> H[FastAPI Service]
-    H --> I[/predict Endpoint]
-    I --> J{Pydantic Check}
-    J -->|OK| K[Inferência]
-    K --> L[Resposta JSON]
+    A["Raw Data"] --> B["Pipeline src.data"]
+    B --> C{"Validação Pandera"}
+    C -->|Sucesso| D["Feature Engineering"]
+    D --> E["Treino PyTorch MLP"]
+    E --> F["MLflow Tracking"]
+    F --> G["Model Registry .pth"]
+    G --> H["FastAPI Service"]
+    H --> I["/predict Endpoint"]
+    I --> J{"Pydantic Check"}
+    J -->|OK| K["Inferência"]
+    K --> L["Resposta JSON"]
 ```
 
 ---
