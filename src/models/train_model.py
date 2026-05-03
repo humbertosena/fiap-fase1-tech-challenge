@@ -1,12 +1,13 @@
+
+import mlflow
+import mlflow.pytorch
+import numpy as np
+import pandas as pd
 import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
-import pandas as pd
-import numpy as np
-import mlflow
-import mlflow.pytorch
-import os
+
 from src.models.predict_model import ChurnMLP
 from src.utils.logging_config import setup_logging
 from src.utils.seed_config import set_seeds
@@ -73,7 +74,7 @@ def train():
 
     X_train = train_df.drop(columns=["Churn"]).values
     y_train = train_df["Churn"].values.reshape(-1, 1)
-    
+
     X_test = test_df.drop(columns=["Churn"]).values
     y_test = test_df["Churn"].values.reshape(-1, 1)
 
@@ -89,12 +90,12 @@ def train():
     model = ChurnMLP(input_dim=input_dim)
     criterion = nn.BCELoss()
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
-    
+
     early_stopping = EarlyStopping(patience=PATIENCE, path=MODEL_PATH)
 
     # 4. Loop de Treinamento com MLflow
     mlflow.set_experiment("Telco_Churn_MLP")
-    
+
     with mlflow.start_run(run_name="MLP_PyTorch_Final"):
         mlflow.log_param("batch_size", BATCH_SIZE)
         mlflow.log_param("learning_rate", LEARNING_RATE)
@@ -113,7 +114,7 @@ def train():
                 loss.backward()
                 optimizer.step()
                 train_losses.append(loss.item())
-            
+
             avg_train_loss = np.mean(train_losses)
 
             # Validação
@@ -124,13 +125,13 @@ def train():
                     val_outputs = model(val_x)
                     val_loss = criterion(val_outputs, val_y)
                     val_losses.append(val_loss.item())
-            
+
             avg_val_loss = np.mean(val_losses)
 
             # Logs por época
             mlflow.log_metric("train_loss", avg_train_loss, step=epoch)
             mlflow.log_metric("val_loss", avg_val_loss, step=epoch)
-            
+
             if epoch % 5 == 0:
                 logger.info(f"Epoch {epoch}: Train Loss {avg_train_loss:.4f} | Val Loss {avg_val_loss:.4f}")
 
@@ -144,7 +145,7 @@ def train():
         logger.info("Treinamento finalizado. Avaliando métricas finais...")
         model.load_state_dict(torch.load(MODEL_PATH))
         model.eval()
-        
+
         all_preds = []
         all_targets = []
         with torch.no_grad():
@@ -152,10 +153,10 @@ def train():
                 preds = model(x)
                 all_preds.extend(preds.numpy())
                 all_targets.extend(y.numpy())
-        
+
         all_preds = np.array(all_preds)
         all_targets = np.array(all_targets)
-        
+
         # Calcular métricas simples para log (F1, AUC-ROC seriam melhores mas requerem sklearn)
         from sklearn.metrics import f1_score, roc_auc_score
         final_f1 = f1_score(all_targets, (all_preds >= 0.5).astype(int))
@@ -163,9 +164,9 @@ def train():
 
         mlflow.log_metric("final_f1_score", final_f1)
         mlflow.log_metric("final_auc_roc", final_auc)
-        
+
         logger.info(f"Métricas Finais -> F1-Score: {final_f1:.4f} | AUC-ROC: {final_auc:.4f}")
-        
+
         # Salvar o modelo no MLflow
         mlflow.pytorch.log_model(model, "model")
 

@@ -200,3 +200,32 @@ Transformar o projeto em um serviço produtivo e robusto, implementando contrato
   - **Detalhes:** Definida a estratégia de detecção de Drift (PSI) e o playbook de resposta a falhas.
 - **`feat(automation): automação completa do pipeline de benchmark`**
   - **O que foi feito:** Atualizado o `Makefile` com `make benchmark`.
+
+---
+
+## [Iteração Final] - Etapa 4: Governança, Finalização e Pitch - 02/05/2026
+
+**Objetivo da Fase:** 
+Consolidar a documentação final, garantir a governança do modelo e preparar a apresentação executiva (Pitch), transformando o projeto técnico em um produto de ML auditável.
+
+### Resumo de Atividades:
+
+- **`feat(docs): confecção do Model Card do ChurnMLP`**
+  - **O que foi feito:** Criado `docs/model_card.md`.
+  - **Detalhes:** Documentação exaustiva da arquitetura neural, métricas de performance (AUC 0.91), análise de vieses e limitações éticas conforme padrões da indústria.
+- **`refactor(docs): evolução para Monitoring Playbook`**
+  - **O que foi feito:** Refatoração de `docs/plano_monitoramento.md` para `docs/monitoring_playbook.md`.
+  - **Detalhes:** Inclusão de SLOs técnicos (Latência, Disponibilidade) e detalhamento da estratégia de mitigação de Data Drift via PSI.
+- **`docs: overhaul executivo do README.md`**
+  - **O que foi feito:** Reescrita completa do `README.md`.
+  - **Detalhes:** Adição de visão executiva (ROI), diagrama de arquitetura Mermaid e guias de início rápido simplificados para o avaliador.
+- **`docs: estruturação do Pitch pelo Método STAR`**
+  - **O que foi feito:** Criado `docs/roteiro_pitch.md`.
+  - **Detalhes:** Roteiro de 5 minutos cobrindo Situação, Tarefa, Ação e Resultado, focando no valor de negócio e na robustez da engenharia aplicada.
+- **`quality(audit): validação final de integridade`**
+  - **O que foi feito:** Execução de bateria completa de testes e pipelines.
+  - **Detalhes:** 
+    - Pipeline de dados validado com dados sintéticos.
+    - Treinamento PyTorch com Early Stopping confirmado.
+    - Suíte de testes (Pytest) com 100% de aprovação.
+    - Conformidade de estilo (PEP 8) aplicada via Ruff.

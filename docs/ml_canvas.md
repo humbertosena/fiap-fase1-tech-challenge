@@ -2,8 +2,8 @@
 
 **Projeto**: Previsão de Churn - Operadora de Telecom (FIAP Tech Challenge)<br/>
 **Responsável**: Humberto Sena Santos<br/>
-**Data**: 21/04/2026<br/>
-**Iteração**: v0.3 - Baseline & Pipeline Modular de Dados<br/>
+**Data**: 02/05/2026<br/>
+**Iteração**: v1.0 - Produto de ML Industrial (End-to-End)<br/>
 
 > 📄 **Versão visual (PNG):** [ml_canvas.png](ml_canvas.png) — Formato padrão de mercado para apresentação.
 
@@ -20,7 +20,7 @@ Classificação Binária.
 
 - **Input**: Dados demográficos, serviços assinados, informações contratuais e histórico de cobrança ( IBM Telco Customer Churn Dataset).
 - **Output**: Classe "Churn" (Sim/Não).
-- **Ponto de Corte (Trigger)**: A definir após EDA (necessário isolar a janela de predição para evitar leakage).
+- **Ponto de Corte (Trigger)**: Otimizado financeiramente para **0.165** (Baseline) e calibrado para a MLP visando o máximo Recall com Precision estável.
 
 ## 3. Fontes de Dados (Data Sources)
 
@@ -61,7 +61,7 @@ Retreino mensal (Batch) utilizando PyTorch (MLP) para capturar mudanças no comp
 
 ## 8. Realização de Predições (Making Predictions)
 
-Predição em lote (Batch) executada mensalmente para toda a base ativa. Baixa restrição de latência (processamento overnight).
+Predição sob demanda via **API FastAPI** (inferência síncrona) para integração com sistemas de CRM em tempo real, além de suporte a processamento em lote (Batch). Alta performance com latência < 200ms.
 
 ## 9. Avaliação Offline (Offline Evaluation)
 
