@@ -1,7 +1,9 @@
 import pandas as pd
 import pytest
-from src.schemas.churn_schema import raw_churn_schema, processed_churn_schema
 from pandera.errors import SchemaError
+
+from src.schemas.churn_schema import processed_churn_schema, raw_churn_schema
+
 
 def test_raw_churn_schema_valid(valid_payload):
     """Testa se o schema Pandera valida corretamente dados íntegros."""

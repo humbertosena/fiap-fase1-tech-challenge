@@ -1,10 +1,12 @@
-import pandas as pd
-import numpy as np
 import os
+
+import numpy as np
+import pandas as pd
+
 
 def create_dummy_data():
     os.makedirs("data/processed", exist_ok=True)
-    
+
     # 30 columns as seen in the notebook/preprocessor logic
     cols = [
         "num__tenure", "num__MonthlyCharges", "num__TotalCharges", "num__Charges_per_Tenure",
@@ -21,12 +23,12 @@ def create_dummy_data():
         "cat__PaperlessBilling_Yes", "cat__PaymentMethod_Credit card (automatic)",
         "cat__PaymentMethod_Electronic check", "cat__PaymentMethod_Mailed check"
     ]
-    
+
     # Generate 100 rows
     data = np.random.randn(100, len(cols))
     df = pd.DataFrame(data, columns=cols)
     df["Churn"] = np.random.randint(0, 2, 100)
-    
+
     df.to_csv("data/processed/train_processed.csv", index=False)
     df.to_csv("data/processed/test_processed.csv", index=False)
     print("Dummy data created successfully.")
