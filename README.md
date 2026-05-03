@@ -1,4 +1,4 @@
-# Churn Prediction System | Telecom End-to-End Solution
+# Tech Challenge - Fase 1 | Pós-Graduação Machine Learning Engineering - FIAP<br><sub>Churn Prediction System | Telecom End-to-End Solution</sub>
 
 [![Python](https://img.shields.io/badge/python-3.10+-3670A0?style=flat&logo=python&logoColor=ffdd54)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=flat&logo=fastapi)](https://fastapi.tiangolo.com/)
@@ -14,8 +14,33 @@ O Churn (rotatividade de clientes) custa à operadora de telecomunicações apro
 
 ### Principais Resultados:
 *   **Modelo Neural:** Superou baselines lineares em **15%** de F1-Score.
-*   **Confiabilidade:** Sistema de gatekeeping que impede a inferência sobre dados corrompidos.
+*   **Confiabilidade:** Sistema de proteção técnica que impede a inferência sobre dados corrompidos.
 *   **Governança:** 100% dos experimentos rastreados e auditáveis via MLflow.
+
+---
+
+## 📂 Estrutura do Projeto
+
+O repositório segue os padrões de mercado para projetos MLOps, separando o laboratório de experimentação do código produtivo:
+
+```text
+├── data/               # Ingestão e armazenamento de dados (raw/processed)
+├── docs/               # Documentação técnica, governança e ADRs
+│   ├── adr/            # Architecture Decision Records (Decisões de Engenharia)
+├── models/             # Artefatos exportados (model.pth, preprocessor.pkl)
+├── notebooks/          # Laboratório de Análise Exploratória (EDA)
+├── src/                # Código-fonte produtivo modularizado
+│   ├── api/            # Serventia FastAPI e lógica de inferência
+│   ├── data/           # Script orquestrador do pipeline de dados
+│   ├── features/       # Feature Engineering e Validação de Schema (Pandera)
+│   ├── models/         # Treinamento e Benchmarking (Linear, Árvore, MLP)
+│   ├── schemas/        # Contratos de dados (Pydantic e Pandera)
+│   └── utils/          # Configurações de seeds e logs estruturados
+├── tests/              # Suíte de testes (unitários, schema e integração)
+├── Makefile            # Centralizador de automação do projeto
+├── pyproject.toml      # Gestão moderna de dependências e ferramentas
+└── mlflow.db           # Banco de dados central de experimentos (Git LFS)
+```
 
 ---
 
@@ -38,53 +63,81 @@ graph TD
 
 ---
 
-## 🛠️ Guia de Início Rápido
+## 🎓 Guia de Aprendizado (Passo a Passo)
 
-### 1. Requisitos
-*   Python 3.10+
-*   [uv](https://github.com/astral-sh/uv) (Gerenciador de pacotes ultrarrápido)
+Para um estudante de ML reproduzir este projeto do zero e entender cada etapa, siga este roteiro:
 
-### 2. Instalação e Preparação
+### 1. Configuração do Laboratório
+Instale as dependências e prepare o ambiente virtual:
 ```bash
 make install
-# Para fins de teste/validação (gera dados sintéticos):
+```
+
+### 2. A Ingestão e o Pipeline de Dados
+Para validar a resiliência do sistema, gere dados sintéticos brutos e execute o pipeline de processamento:
+```bash
 uv run python tests/create_raw_dummy.py
 uv run python -m src.data.make_dataset
 ```
+*Este passo valida a "Qualidade de Entrada" via Pandera, transformando dados raw em features prontas para a rede neural.*
 
-### 3. Comandos Principais (Makefile)
-| Comando | Descrição |
-| :--- | :--- |
-| `make train` | Treina a MLP com Early Stopping e loga no MLflow. |
-| `make benchmark` | Executa o comparativo contra Random Forest. |
-| `make test` | Roda a suíte de testes automatizados e de integração. |
-| `make run-api` | Inicia o servidor FastAPI (Porta 8000). |
+### 3. A Tríade de Modelagem
+O projeto exige a comparação entre diferentes algoritmos. Execute cada um para registrar no MLflow:
+```bash
+# Treina a solução final (Neural)
+make train
+# Executa os Benchmarks (Linear e Árvore)
+make benchmark
+```
+
+### 4. Estudo de Performance
+Com os modelos treinados, visualize o dashboard para comparar F1-Score e AUC-ROC:
+```bash
+uv run mlflow ui --backend-store-uri sqlite:///mlflow.db
+```
+
+### 5. Validação de Software
+Antes do deploy, garanta que nada foi quebrado:
+```bash
+make test
+```
+
+### 6. Subindo o Serviço de Inferência
+Coloque o modelo em produção e realize predições via Swagger:
+```bash
+make run-api
+```
+Acesse: [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ---
 
 ## 📊 Governança & MLOps (MLflow)
-O projeto utiliza **MLflow** para rastreamento de experimentos. Para visualizar a performance de todos os modelos (Linear vs Árvore vs Neural):
 
-1. Inicie a UI: \`uv run mlflow ui --backend-store-uri sqlite:///mlflow.db\`
-2. Acesse: \`http://localhost:5000\`
+O projeto utiliza **MLflow** para rastreamento de experimentos. 
+
+### 💾 Banco de Dados Centralizado (Git LFS)
+Neste projeto, o arquivo **`mlflow.db`** está sendo rastreado via **Git LFS (Large File Storage)**. 
+*   **Motivo:** Garantir que o histórico técnico de todos os experimentos (Tríade de Modelos) seja persistido e compartilhado de forma portável, sem sobrecarregar o histórico do repositório Git com arquivos binários de bancos de dados SQLite. Isso permite que qualquer pessoa que clone o projeto visualize os resultados reais alcançados.
+*   **Escalabilidade:** Caso o projeto escale ou ultrapasse o limite de armazenamento do Git LFS, recomenda-se a migração do banco de dados e dos artefatos para serviços de storage robustos, como **AWS S3**, **Azure Blob Storage** ou **Google Cloud Storage**, além da utilização de um banco de dados relacional gerenciado (PostgreSQL/MySQL) para o backend do MLflow.
 
 ---
 
-## 📄 Documentação Técnica
+## 📄 Artefatos e Documentação Técnica
 
+Consulte a pasta `docs/` para documentos especializados que sustentam a solução:
 
-Para uma visão aprofundada, consulte os artefatos de governança:
-
-1.  **[Model Card](docs/model_card.md)**: Detalhes da arquitetura, métricas e vieses.
-2.  **[Monitoring Playbook](docs/monitoring_playbook.md)**: Estratégia de Drift e resposta a incidentes.
-3.  **[ADRs (Decisões de Arquitetura)](docs/adr/)**: Por que escolhemos FastAPI e Pandera.
-4.  **[Comparativo da Tríade](docs/comparativo_triade_modelos.md)**: Análise entre Linear, Árvore e MLP.
+*   **[Model Card](docs/model_card.md)**: A "bula" técnica do modelo, detalhando a arquitetura neural, métricas e IA ética.
+*   **[Monitoring Playbook](docs/monitoring_playbook.md)**: Guia operacional para detecção de Data Drift (PSI) e resposta a incidentes.
+*   **[ADRs (Architecture Decision Records)](docs/adr/)**: Registro histórico das decisões de engenharia (ex: escolha do FastAPI).
+*   **[Comparativo da Tríade](docs/comparativo_triade_modelos.md)**: Análise técnica detalhada comparando modelos Lineares, de Árvore e Neurais.
+*   **[ML Canvas](docs/ml_canvas.md)**: Visão estratégica do modelo de negócio aplicado ao Machine Learning.
+*   **[Memória de Desenvolvimento](docs/memoria_desenvolvimento.md)**: Diário de bordo com o log cronológico de todas as atividades e evoluções.
 
 ---
 
 ## 🎥 Pitch de Apresentação
-O vídeo detalhando a jornada técnica e os resultados de negócio pode ser acessado em:
-> **[LINK DO VÍDEO AQUI]** (Duração: 5 minutos | Método STAR)
+O vídeo detalhando a jornada técnica e os resultados de negócio está em fase de produção.
+> **⚠️ Nota:** O vídeo final (Método STAR) será liberado e integrado juntamente com a **versão oficial e definitiva** do projeto.
 
 ---
 
