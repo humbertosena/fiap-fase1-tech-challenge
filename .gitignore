@@ -30,3 +30,7 @@ mlartifacts/
 gha-creds-*.json
 .github/
 uv.lock
+
+# Log Viewer
+api.log
+.plan/log_viewer.py
