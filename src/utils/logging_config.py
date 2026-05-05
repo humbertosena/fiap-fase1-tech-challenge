@@ -18,6 +18,11 @@ def setup_logging(name: str = "churn_prediction"):
         handler.setFormatter(formatter)
         logger.addHandler(handler)
 
+        # Adiciona handler para arquivo para que possamos ler no log_viewer
+        file_handler = logging.FileHandler("api.log")
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
+
     return logger
 
 logger = setup_logging()

@@ -141,8 +141,11 @@ Consulte a pasta `docs/` para documentos especializados que sustentam a soluçã
 ---
 
 ## 🎥 Pitch de Apresentação
-O vídeo detalhando a jornada técnica e os resultados de negócio está em fase de produção.
-> **⚠️ Nota:** O vídeo final (Método STAR) será liberado e integrado juntamente com a **versão oficial e definitiva** do projeto.
+Confira o nosso vídeo detalhando a jornada técnica e os resultados de negócio (estruturado no Método STAR):
+
+[![Pitch de Apresentação](https://img.youtube.com/vi/-72R5PA1zZI/hqdefault.jpg)](https://youtu.be/-72R5PA1zZI)
+
+🔗 **Link do YouTube:** [https://youtu.be/-72R5PA1zZI](https://youtu.be/-72R5PA1zZI)
 
 ---
 
