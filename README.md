@@ -12,6 +12,11 @@ Este repositório contém a solução completa para o **Tech Challenge (Fase 1)*
 ## 📈 Visão Executiva
 O Churn (rotatividade de clientes) custa à operadora de telecomunicações aproximadamente **R$ 500,00 por cliente perdido** (LTV médio). Nossa solução reduz esse impacto ao identificar com **91% de AUC-ROC** os perfis de risco, permitindo ações de retenção cirúrgicas.
 
+> **⚠️ Nota sobre os Custos de Negócio:**
+> Os valores financeiros utilizados foram definidos de forma arbitrária para fins de estudo, tomando como suporte o artigo [Telecom Churn: Definition, Calculation, and Prevention](https://tridenstechnology.com/telecom-churn/).
+> *   **R$ 500,00 (Custo de Falso Negativo):** Representa a perda estimada do *Lifetime Value* (LTV) quando um cliente cancela o serviço sem ser identificado preventivamente.
+> *   **R$ 50,00 (Custo de Falso Positivo):** Representa o investimento em campanhas de retenção ou descontos direcionados a clientes que, na realidade, não pretendiam sair da base.
+
 ### Principais Resultados:
 *   **Modelo Neural:** Superou baselines lineares em **15%** de F1-Score.
 *   **Confiabilidade:** Sistema de proteção técnica que impede a inferência sobre dados corrompidos.

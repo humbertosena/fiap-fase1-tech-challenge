@@ -9,6 +9,7 @@ import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 
 from src.models.predict_model import ChurnMLP
+from src.utils.financial import optimize_financial_threshold
 from src.utils.logging_config import setup_logging
 from src.utils.seed_config import set_seeds
 
@@ -93,14 +94,28 @@ def train():
 
     early_stopping = EarlyStopping(patience=PATIENCE, path=MODEL_PATH)
 
-    # 4. Loop de Treinamento com MLflow
-    mlflow.set_experiment("Telco_Churn_MLP")
+    # 4. Loop de Treinamento com MLflow (experimento unificado)
+    mlflow.set_experiment("churn-prediction")
 
-    with mlflow.start_run(run_name="MLP_PyTorch_Final"):
-        mlflow.log_param("batch_size", BATCH_SIZE)
-        mlflow.log_param("learning_rate", LEARNING_RATE)
-        mlflow.log_param("max_epochs", EPOCHS)
-        mlflow.log_param("patience", PATIENCE)
+    with mlflow.start_run(run_name="MLP_PyTorch_v1"):
+        mlflow.set_tag("mlflow.runType", "TRAINING")
+        mlflow.log_params({
+            "model_type": "MLP_PyTorch",
+            "batch_size": BATCH_SIZE,
+            "learning_rate": LEARNING_RATE,
+            "max_epochs": EPOCHS,
+            "patience": PATIENCE,
+            "optimizer": "Adam",
+            "loss_function": "BCELoss",
+            "hidden_layers": "16,8",
+            "activation": "ReLU",
+            "output_activation": "Sigmoid",
+            "input_dim": int(input_dim),
+            "random_state": 42,
+            "data_split": "train_test_80_20_stratified",
+            "cost_fn": 500,
+            "cost_fp": 50,
+        })
 
         logger.info("Iniciando loop de treinamento...")
         for epoch in range(EPOCHS):
@@ -157,15 +172,34 @@ def train():
         all_preds = np.array(all_preds)
         all_targets = np.array(all_targets)
 
-        # Calcular métricas simples para log (F1, AUC-ROC seriam melhores mas requerem sklearn)
-        from sklearn.metrics import f1_score, roc_auc_score
-        final_f1 = f1_score(all_targets, (all_preds >= 0.5).astype(int))
-        final_auc = roc_auc_score(all_targets, all_preds)
+        # Métricas finais com vocabulário canônico (test_*)
+        from sklearn.metrics import (
+            f1_score,
+            precision_score,
+            recall_score,
+            roc_auc_score,
+        )
+        y_pred_int = (all_preds >= 0.5).astype(int)
+        test_f1 = f1_score(all_targets, y_pred_int)
+        test_precision = precision_score(all_targets, y_pred_int)
+        test_recall = recall_score(all_targets, y_pred_int)
+        test_auc = roc_auc_score(all_targets, all_preds)
+        opt_threshold, min_loss = optimize_financial_threshold(all_targets, all_preds)
 
-        mlflow.log_metric("final_f1_score", final_f1)
-        mlflow.log_metric("final_auc_roc", final_auc)
+        mlflow.log_metrics({
+            "test_f1_score": test_f1,
+            "test_precision": test_precision,
+            "test_recall": test_recall,
+            "test_auc_roc": test_auc,
+            "optimal_threshold": opt_threshold,
+            "min_financial_loss": min_loss,
+        })
 
-        logger.info(f"Métricas Finais -> F1-Score: {final_f1:.4f} | AUC-ROC: {final_auc:.4f}")
+        logger.info(
+            f"Métricas Finais -> F1: {test_f1:.4f} | Prec: {test_precision:.4f} "
+            f"| Rec: {test_recall:.4f} | AUC: {test_auc:.4f} "
+            f"| OptThr: {opt_threshold:.3f} | MinLoss: R$ {min_loss:,.2f}"
+        )
 
         # Salvar o modelo no MLflow
         mlflow.pytorch.log_model(model, "model")
