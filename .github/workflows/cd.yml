@@ -12,6 +12,7 @@ permissions:
 jobs:
   infra-and-deploy:
     runs-on: ubuntu-latest
+    environment: production
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
