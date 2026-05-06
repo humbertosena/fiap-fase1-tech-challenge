@@ -1,0 +1,56 @@
+name: CD - Provisionamento e Deploy Azure
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  infra-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_USE_OIDC: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init & Apply
+        run: |
+          cd infra/terraform
+          terraform init -backend-config="resource_group_name=${{ secrets.TF_STATE_RG }}" \
+                         -backend-config="storage_account_name=${{ secrets.TF_STATE_STORAGE }}" \
+                         -backend-config="container_name=tfstate" \
+                         -backend-config="key=churn.tfstate"
+          terraform apply -auto-approve
+
+      - name: Build and Push Docker Image
+        run: |
+          ACR_NAME=$(cd infra/terraform && terraform output -raw acr_login_server || echo "acrfiapchurn.azurecr.io")
+          az acr login --name $ACR_NAME
+          docker build -t $ACR_NAME/churn-api:${{ github.sha }} .
+          docker tag $ACR_NAME/churn-api:${{ github.sha }} $ACR_NAME/churn-api:latest
+          docker push $ACR_NAME/churn-api:latest
+
+      - name: Update Container App
+        run: |
+          az containerapp update \
+            --name api-fiap-churn \
+            --resource-group rg-fiap-churn \
+            --image $(cd infra/terraform && terraform output -raw acr_login_server)/churn-api:latest
