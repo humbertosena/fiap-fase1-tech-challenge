@@ -1,0 +1,33 @@
+name: CI - Qualidade e Testes
+
+on:
+  push:
+    branches: [ main, feature/* ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          
+      - name: Setup Python
+        run: uv python install 3.10
+        
+      - name: Install dependencies
+        run: make install
+        
+      - name: Lint with Ruff
+        run: make lint
+        
+      - name: Run Tests
+        run: |
+          uv run python tests/create_raw_dummy.py
+          uv run python -m src.data.make_dataset
+          make test

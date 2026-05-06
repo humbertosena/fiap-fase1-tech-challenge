@@ -28,7 +28,6 @@ mlartifacts/
 .plan/
 .gemini/
 gha-creds-*.json
-.github/
 uv.lock
 
 # Log Viewer
